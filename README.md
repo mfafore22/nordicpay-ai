@@ -220,3 +220,58 @@ Op-ai/
 | BONUS: Agent structure | Reasoning steps displayed |
 | BONUS: Prompts described | System prompt in config.py |
 | BONUS: Easy to extend | Modular architecture, Docker support |
+
+## Running Without Docker (For Local Model Testing)
+
+The local fine-tuned model (TinyLlama + LoRA) requires significant CPU resources and may timeout in Docker. To test the local model, run the application directly:
+
+### Prerequisites
+
+- Python 3.10+
+- Node.js 18+
+- 8GB RAM minimum
+
+### Step 1: Update .env for Local Running
+```bash
+# Change LORA_ADAPTER_PATH to local path (not Docker path)
+LORA_ADAPTER_PATH=C:/Users/Dell/Downloads/Op-ai/nordic-bank-model
+```
+
+### Step 2: Start Backend
+```bash
+cd C:\Users\Dell\Downloads\Op-ai
+
+# Create virtual environment (first time only)
+python -m venv venv
+venv\Scripts\activate
+
+# Install dependencies (first time only)
+pip install -r requirements.txt
+
+# Start backend
+python -m uvicorn app.main:app --reload
+```
+
+### Step 3: Start Frontend
+
+Open a new terminal:
+```bash
+cd C:\Users\Dell\Downloads\Op-ai\frontend
+npm install
+npm run dev
+```
+
+### Step 4: Access Application
+
+- Frontend: http://localhost:5173
+- Backend: http://localhost:8000
+
+### Model Selection Guide
+
+| Model | Speed | Best For |
+|-------|-------|----------|
+| Groq | 2-5 seconds | Demo, daily use |
+| Local LoRA | 1-10 minutes (CPU) | Privacy, offline use |
+| OpenAI | 2-5 seconds | High quality (paid) |
+
+**Note:** First request to local model takes longer as it loads the model into memory. Subsequent requests use cached model.
