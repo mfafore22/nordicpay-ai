@@ -1,0 +1,38 @@
+{
+  "6c5334f940fa94911bf1e59a9d4061c1799686ad09b1b3893ecea3dc84b86c59": {
+    "response": "The monthly fee for Plus account is \u20ac4.90.",
+    "ts": 1775482339.2162263,
+    "model": "local-lora",
+    "question": "What is the monthly fee for Plus?"
+  },
+  "6890c04c1c851affa4378c627d4f8c8c95c2c021422d0cf2ffbf87e55fbdf6cc": {
+    "response": "The monthly fee for the NordicPay Plus account is \u20ac4.90.",
+    "ts": 1775482524.7102478,
+    "model": "groq",
+    "question": "What is the monthly fee for Plus?"
+  },
+  "4d9148755024a6275b4ea12fd83bb5cead77a897a02376c4b8b25e9966d0b2f5": {
+    "response": "I don't have information about that.",
+    "ts": 1775483880.926994,
+    "model": "groq",
+    "question": "General banking qurstion"
+  },
+  "b83f6e7bbf7bc0adfa4784bdafe900cb86cae13ebb7f2fd4f582b514763e3238": {
+    "response": "I don't have information about that. Could you provide more context or clarify what you are asking? I'll do my best to assist you.",
+    "ts": 1775483892.7846618,
+    "model": "groq",
+    "question": "General Banking Question"
+  },
+  "aabe3232f899f5472f1f57000e8f6c777b7c5064a45114bb8d3ea4959bcd1220": {
+    "response": "I'm here to help with your NordicPay banking questions. What would you like to know?",
+    "ts": 1775483906.849076,
+    "model": "groq",
+    "question": "General Banking Questions"
+  },
+  "147b7f1779a7cf253b70c302f10fea50fdf93fb0da8bf6f6fc2f0ee15ddc08d3": {
+    "response": "I have information about data security, data retention, fraud protection, service outage compensation, multiple cards, update email, quick loan, home renovation loan, loan requirements, data collection, data sharing, changing PIN, card freeze, cancelling subscription, password reset, account opening, account closure, and card features.",
+    "ts": 1775483919.779283,
+    "model": "groq",
+    "question": "What information do you have"
+  }
+}

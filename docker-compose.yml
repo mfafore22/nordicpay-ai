@@ -1,0 +1,107 @@
+# Docker Compose for NordicPay AI
+#
+# This file defines how to run the complete application stack.
+#
+# USAGE:
+#   Start all services:     docker-compose up
+#   Start in background:    docker-compose up -d
+#   Stop all services:      docker-compose down
+#   Rebuild after changes:  docker-compose up --build
+#   View logs:              docker-compose logs -f
+#
+# WHAT IS DOCKER COMPOSE?
+# - Defines multi-container applications in one file
+# - Manages networking between containers automatically
+# - Simplifies development and deployment
+
+
+
+services:
+  # ---------------------------------------------------------------------------
+  # Backend Service (FastAPI)
+  # ---------------------------------------------------------------------------
+  backend:
+    # Build from Dockerfile in current directory
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    # Container name for easy reference
+    container_name: nordicpay-backend
+    
+    # Port mapping: host:container
+    # Access backend at http://localhost:8000
+    ports:
+      - "8000:8000"
+    
+    # Environment variables
+    # Option 1: From .env file (recommended)
+    env_file:
+      - .env
+    
+    # Mount local directories into container
+    # This allows live updates without rebuilding
+    volumes:
+      # Mount financial docs (changes reflect immediately)
+      - ./financial_docs:/app/financial_docs:ro
+      
+      # Mount LoRA model if using local model
+      - ./nordic-bank-model:/app/nordic-bank-model:ro
+      
+      # Persist vector store between restarts
+      - ./faiss_index:/app/faiss_index
+    
+    # Restart policy
+    # "unless-stopped": Restart always except when manually stopped
+    restart: unless-stopped
+    
+    # Health check (also defined in Dockerfile, this overrides)
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ---------------------------------------------------------------------------
+  # Frontend Service (SvelteKit with Node)
+  # ---------------------------------------------------------------------------
+  frontend:
+    # Use Node image directly (simpler than custom Dockerfile)
+    image: node:20-alpine
+    
+    container_name: nordicpay-frontend
+    
+    # Working directory inside container
+    working_dir: /app
+    
+    # Port mapping
+    # Access frontend at http://localhost:5173
+    ports:
+      - "5173:5173"
+    
+    # Mount frontend code
+    volumes:
+      - ./frontend:/app
+      # Anonymous volume for node_modules (prevents overwriting)
+      - /app/node_modules
+    
+    # Install dependencies and start dev server
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    
+    # Wait for backend to be ready
+    depends_on:
+      backend:
+        condition: service_healthy
+    
+    # Environment variables for frontend
+    environment:
+      # Tell Vite to accept connections from any host
+      - HOST=0.0.0.0
+
+# ---------------------------------------------------------------------------
+# Networks (optional - Docker Compose creates default network)
+# ---------------------------------------------------------------------------
+networks:
+  default:
+    name: nordicpay-network

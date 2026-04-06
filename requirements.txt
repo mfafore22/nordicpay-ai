@@ -1,0 +1,17 @@
+torch
+transformers
+peft
+accelerate
+langchain
+langchain-community
+langchain-openai
+langchain-text-splitters
+faiss-cpu
+sentence-transformers
+numpy
+python-dotenv
+fastapi
+uvicorn[standard]
+openai
+httpx
+groq
